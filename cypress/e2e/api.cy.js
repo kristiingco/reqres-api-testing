@@ -60,7 +60,7 @@ describe("API Tests", () => {
         });
     });
 
-    it.only("should do a failing POST request", () => {
+    it("should do a failing POST request", () => {
         cy.request({
             url: "/login",
             method: "POST",
