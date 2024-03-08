@@ -77,4 +77,10 @@ describe("API Tests", () => {
             expect(loginError).to.equal("Missing password");
         });
     });
+
+    it("should do a DELETE request", () => {
+        cy.request({ url: "/users/2", method: "DELETE" }).as("deleteUser");
+
+        cy.get("@deleteUser").its("status").should("equal", 204);
+    });
 });
