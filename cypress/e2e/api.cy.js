@@ -42,7 +42,7 @@ describe("API Tests", () => {
         });
     });
 
-    it("should do a POST request", () => {
+    it("should do a successful POST request", () => {
         cy.request({
             url: "/login",
             method: "POST",
@@ -57,6 +57,24 @@ describe("API Tests", () => {
             const loginToken = res.body.token;
 
             expect(loginToken).to.equal("QpwL5tke4Pnpja7X4");
+        });
+    });
+
+    it.only("should do a failing POST request", () => {
+        cy.request({
+            url: "/login",
+            method: "POST",
+            body: {
+                email: "eve.holt@reqres.in",
+            },
+            failOnStatusCode: false,
+        }).as("loginRequest");
+
+        cy.get("@loginRequest").its("status").should("equal", 400);
+        cy.get("@loginRequest").then((res) => {
+            const loginError = res.body.error;
+
+            expect(loginError).to.equal("Missing password");
         });
     });
 });
