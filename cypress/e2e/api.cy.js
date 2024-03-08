@@ -28,4 +28,17 @@ describe("API Tests", () => {
 
         cy.get("@nonExstingUser").its("status").should("equal", 404);
     });
+
+    it("should do a GET request", () => {
+        cy.request({ url: "/users/2", method: "GET" }).as("user");
+        cy.get("@user").then((res) => {
+            const userID = res.body.data.id;
+            const userEmail = res.body.data.email;
+            const userLastName = res.body.data.last_name;
+
+            expect(userID).equal(2);
+            expect(userEmail).contain("janet.weaver@reqres.in");
+            expect(userLastName).not.to.contain(/^\d+$/);
+        });
+    });
 });
