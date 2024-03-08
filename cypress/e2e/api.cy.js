@@ -41,4 +41,22 @@ describe("API Tests", () => {
             expect(userLastName).not.to.contain(/^\d+$/);
         });
     });
+
+    it("should do a POST request", () => {
+        cy.request({
+            url: "/login",
+            method: "POST",
+            body: {
+                email: "eve.holt@reqres.in",
+                password: "cityslicka",
+            },
+        }).as("loginRequest");
+
+        cy.get("@loginRequest").its("status").should("equal", 200);
+        cy.get("@loginRequest").then((res) => {
+            const loginToken = res.body.token;
+
+            expect(loginToken).to.equal("QpwL5tke4Pnpja7X4");
+        });
+    });
 });
