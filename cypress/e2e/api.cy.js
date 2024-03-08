@@ -83,4 +83,20 @@ describe("API Tests", () => {
 
         cy.get("@deleteUser").its("status").should("equal", 204);
     });
+
+    it("should do a PUT request", () => {
+        cy.request({
+            url: "/users/2",
+            method: "PUT",
+            body: {
+                name: "morpheus",
+            },
+        }).as("updateUser");
+
+        cy.get("@updateUser").its("status").should("equal", 200);
+        cy.get("@updateUser").then((res) => {
+            const userName = res.body.name;
+            expect(userName).to.equal("morpheus");
+        });
+    });
 });
